@@ -1,6 +1,6 @@
-#Olympic Games App
+# Olympic Games App
 
-##Installation
+## Installation
 
 First, install the root dependencies running:
 
@@ -13,7 +13,7 @@ Just after that, run the next command:
 This project uses Lerna to manage the different apps this project has. That command will install all the necessary
 dependencies for every app.
 
-##Development
+## Development
 
 For development, run the next command from the root directory:
 
@@ -22,7 +22,7 @@ For development, run the next command from the root directory:
 This command runs the GraphQL API and the React Application in parallel. It runs both commands in development mode
 so this command must not be used to deploy to production.
 
-##Test
+## Test
 
 For testing, run the next command from the root directory:
 
