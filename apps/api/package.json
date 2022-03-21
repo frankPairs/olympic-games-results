@@ -1,0 +1,31 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js",
+    "test": "tap --jobs-auto",
+    "test:watch": "tap --watch"
+  },
+  "type": "module",
+  "author": "Frank Parejo",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^6.0.0",
+    "nodemon": "^2.0.15",
+    "pino-pretty": "^7.5.4",
+    "tap": "^16.0.0"
+  },
+  "dependencies": {
+    "fastify": "^3.27.4",
+    "fastify-cors": "^6.0.3",
+    "fastify-plugin": "^3.0.1",
+    "graphql": "^16.3.0",
+    "mercurius": "^9.3.5",
+    "sqlite3": "^5.0.2"
+  }
+}

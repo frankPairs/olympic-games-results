@@ -1,0 +1,17 @@
+{
+  "name": "olympic-games",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "lerna run --parallel dev",
+    "test": "lerna run --parallel test"
+  },
+  "author": "Frank Parejo",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "eslint-config-standard": "^16.0.3",
+    "lerna": "^4.0.0"
+  }
+}
