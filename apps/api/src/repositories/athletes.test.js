@@ -1,7 +1,7 @@
 import t from 'tap'
 
 import { InternalDbError } from '../errors.js'
-import { AthleteNotFoundError, athletesRepository } from './athletes.js'
+import { AthleteNotFoundError, AthletesRepository } from './athletes.js'
 
 const mockAthlete = [
   {
@@ -20,7 +20,7 @@ t.test('athlete repository', t => {
   t.test('findOneById ', t => {
     t.test('returns an athlete photo from the database', async t => {
       const db = { get: () => Promise.resolve(mockAthlete[0]) }
-      const repo = athletesRepository(db)
+      const repo = new AthletesRepository(db)
 
       t.resolveMatch(
         repo.findOneById('1'),
@@ -32,7 +32,7 @@ t.test('athlete repository', t => {
 
     t.test('throws an internal database error', (t) => {
       const db = { get: () => Promise.reject(new Error('Db error')) }
-      const repo = athletesRepository(db)
+      const repo = new AthletesRepository(db)
 
       t.rejects(repo.findOneById('1'), new InternalDbError('Internal database error'))
       t.end()
@@ -40,7 +40,7 @@ t.test('athlete repository', t => {
 
     t.test('throws a not found error when athlete does not exists', (t) => {
       const db = { get: () => Promise.resolve(null) }
-      const repo = athletesRepository(db)
+      const repo = new AthletesRepository(db)
 
       t.rejects(
         repo.findOneById('1'),

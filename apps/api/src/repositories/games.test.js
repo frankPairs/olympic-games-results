@@ -1,7 +1,7 @@
 import t from 'tap'
 
 import { InternalDbError } from '../errors.js'
-import { gamesRepository, GameNotFoundError } from './games.js'
+import { GamesRepository, GameNotFoundError } from './games.js'
 
 const mockGames = [
   { game_id: '1', city: 'Barcelona', year: 1992 },
@@ -13,7 +13,7 @@ t.test('games repository', t => {
   t.test('findAll ', t => {
     t.test('returns all games', t => {
       const db = { all: () => Promise.resolve(mockGames) }
-      const repo = gamesRepository(db)
+      const repo = new GamesRepository(db)
 
       t.resolveMatch(
         repo.findAll({ limit: 10, offset: 0 }),
@@ -25,7 +25,7 @@ t.test('games repository', t => {
 
     t.test('throws an internal database error', (t) => {
       const db = { all: () => Promise.reject(new Error('Db error')) }
-      const repo = gamesRepository(db)
+      const repo = new GamesRepository(db)
 
       t.rejects(
         repo.findAll({ limit: 10, offset: 0 }),
@@ -40,7 +40,7 @@ t.test('games repository', t => {
   t.test('findOneById ', t => {
     t.test('returns a game by id', t => {
       const db = { get: () => Promise.resolve(mockGames[0]) }
-      const repo = gamesRepository(db)
+      const repo = new GamesRepository(db)
 
       t.resolveMatch(
         repo.findOneById('1'),
@@ -52,7 +52,7 @@ t.test('games repository', t => {
 
     t.test('throw an internal database error', t => {
       const db = { get: () => Promise.reject(new Error('Db error')) }
-      const repo = gamesRepository(db)
+      const repo = new GamesRepository(db)
 
       t.rejects(repo.findOneById('1'), new InternalDbError('Internal database error'))
       t.end()
@@ -60,7 +60,7 @@ t.test('games repository', t => {
 
     t.test('throws a not found error when a game does not exists', (t) => {
       const db = { get: () => Promise.resolve(null) }
-      const repo = gamesRepository(db)
+      const repo = new GamesRepository(db)
 
       t.rejects(
         repo.findOneById('1'),
@@ -76,7 +76,7 @@ t.test('games repository', t => {
   t.test('countAll ', t => {
     t.test('returns the total number of games', t => {
       const db = { get: () => Promise.resolve({ totalGames: 3 }) }
-      const repo = gamesRepository(db)
+      const repo = new GamesRepository(db)
 
       t.resolveMatch(repo.countAll(), 3)
 
@@ -85,7 +85,7 @@ t.test('games repository', t => {
 
     t.test('throw an internal database error', t => {
       const db = { get: () => Promise.reject(new Error('Db error')) }
-      const repo = gamesRepository(db)
+      const repo = new GamesRepository(db)
 
       t.rejects(repo.countAll(), new InternalDbError('Internal database error'))
       t.end()

@@ -7,35 +7,37 @@ class AthletePhotoNotFoundError extends Error {
   }
 }
 
-function athletePhotosRepository (db) {
-  return {
-    /**
-     * Return the photo of an athlete if it exists.
-     *
-     * @throws {InternalDbError} Internal database error
-     * @param athleteId {string}: Athlete id
-     * @returns {Promise<{ photo_id: string, photo: Buffer, mime_type: string }>}
-     */
-    async findOneByAthlete (athleteId) {
-      let photo
+class AthletePhotosRepository {
+  constructor (db) {
+    this.db = db
+  }
 
-      try {
-        photo = await db.get(`
+  /**
+   * Return the photo of an athlete if it exists.
+   *
+   * @throws {InternalDbError} Internal database error
+   * @param athleteId {string}: Athlete id
+   * @returns {Promise<{ photo_id: string, photo: Buffer, mime_type: string }>}
+   */
+  async findOneByAthlete (athleteId) {
+    let photo
+
+    try {
+      photo = await this.db.get(`
           SELECT * FROM AthletePhoto
           LEFT JOIN Athlete A on A.photo_id = AthletePhoto.photo_id
           WHERE A.athlete_id = $athleteId;
       `, { $athleteId: athleteId })
-      } catch (err) {
-        throw new InternalDbError('Internal database error', err.stack)
-      }
-
-      if (!photo) {
-        throw new AthletePhotoNotFoundError(`Athlete with id ${athleteId} does not have photo.`)
-      }
-
-      return photo
+    } catch (err) {
+      throw new InternalDbError('Internal database error', err.stack)
     }
+
+    if (!photo) {
+      throw new AthletePhotoNotFoundError(`Athlete with id ${athleteId} does not have photo.`)
+    }
+
+    return photo
   }
 }
 
-export { athletePhotosRepository, AthletePhotoNotFoundError }
+export { AthletePhotosRepository, AthletePhotoNotFoundError }

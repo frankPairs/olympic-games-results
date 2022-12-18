@@ -7,35 +7,37 @@ class AthleteNotFoundError extends Error {
   }
 }
 
-function athletesRepository (db) {
-  return {
-    /**
-     * Search an athlete by id. If it exists, it returns a db row object.
-     *
-     * @throws {AthleteNotFoundError} Athlete not found
-     * @throws {InternalDbError} Internal database error
-     * @param athleteId {string}: Athlete id
-     * @returns {Promise<{athlete_id: string, name: string, surname: string, bio: string, date_of_birth: string, weight: number, height: number, photo_id: string}>}
-     */
-    async findOneById (athleteId) {
-      let athlete
+class AthletesRepository {
+  constructor (db) {
+    this.db = db
+  }
 
-      try {
-        athlete = await db.get(`
-          SELECT * FROM Athlete
-          WHERE Athlete.athlete_id = $athleteId;
-      `, { $athleteId: athleteId })
-      } catch (err) {
-        throw new InternalDbError('Internal database error', err.stack)
-      }
+  /**
+   * Search an athlete by id. If it exists, it returns a db row object.
+   *
+   * @throws {AthleteNotFoundError} Athlete not found
+   * @throws {InternalDbError} Internal database error
+   * @param athleteId {string}: Athlete id
+   * @returns {Promise<{athlete_id: string, name: string, surname: string, bio: string, date_of_birth: string, weight: number, height: number, photo_id: string}>}
+   */
+  async findOneById (athleteId) {
+    let athlete
 
-      if (!athlete) {
-        throw new AthleteNotFoundError(`Athlete with id ${athleteId} not found.`)
-      }
-
-      return athlete
+    try {
+      athlete = await this.db.get(`
+        SELECT * FROM Athlete
+        WHERE Athlete.athlete_id = $athleteId;
+    `, { $athleteId: athleteId })
+    } catch (err) {
+      throw new InternalDbError('Internal database error', err.stack)
     }
+
+    if (!athlete) {
+      throw new AthleteNotFoundError(`Athlete with id ${athleteId} not found.`)
+    }
+
+    return athlete
   }
 }
 
-export { athletesRepository, AthleteNotFoundError }
+export { AthletesRepository, AthleteNotFoundError }

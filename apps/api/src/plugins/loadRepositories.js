@@ -3,10 +3,10 @@ import sqlite3 from 'sqlite3'
 import path from 'path'
 
 import {
-  gamesRepository,
-  athletesRepository,
-  athleteResultsRepository,
-  athletePhotosRepository
+  GamesRepository,
+  AthletesRepository,
+  AthleteResultsRepository,
+  AthletePhotosRepository
 } from '../repositories/index.js'
 import { sqlitePromisify } from '../utils/sqlitePromisify.js'
 
@@ -23,10 +23,10 @@ const loadRepositories = fp((fastify, opts, done) => {
   const db = new sqlite3Verbose.Database(dbPath, dbMode)
   const dbPromisify = sqlitePromisify(db)
   const repos = {
-    games: gamesRepository(dbPromisify),
-    athletes: athletesRepository(dbPromisify),
-    athleteResults: athleteResultsRepository(dbPromisify),
-    athletePhotos: athletePhotosRepository(dbPromisify)
+    games: new GamesRepository(dbPromisify),
+    athletes: new AthletesRepository(dbPromisify),
+    athleteResults: new AthleteResultsRepository(dbPromisify),
+    athletePhotos: new AthletePhotosRepository(dbPromisify)
   }
 
   fastify.decorate('repos', repos)
