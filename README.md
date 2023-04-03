@@ -2,16 +2,9 @@
 
 ## Installation
 
-First, install the root dependencies running:
+First, install the projects dependencies running:
 
 ```npm i```
-
-Just after that, run the next command:
-
-```npx lerna bootstrap```
-
-This project uses Lerna to manage the different apps this project has. That command will install all the necessary
-dependencies for every app.
 
 ## Development
 
